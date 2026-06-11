@@ -9,6 +9,7 @@ const predictionRoutes = require('./routes/predictions');
 const leaderboardRoutes = require('./routes/leaderboard');
 const standingsRoutes = require('./routes/standings');
 const syncRoutes = require('./routes/sync');
+const userRoutes = require('./routes/users');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/api/predictions', predictionRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/standings', standingsRoutes);
 app.use('/api/sync', syncRoutes);
+app.use('/api/users', userRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', message: 'Arriba Argentina!' }));
 

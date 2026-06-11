@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', protect, async (req, res) => {
   try {
-    const users = await User.find({ role: 'user' }).select('name email points').sort({ points: -1 });
+    const users = await User.find().select('name email points role').sort({ points: -1 });
 
     const leaderboard = await Promise.all(
       users.map(async (user, index) => {
