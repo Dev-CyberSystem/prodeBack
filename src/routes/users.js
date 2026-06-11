@@ -30,6 +30,22 @@ router.get('/', protect, restrictTo('admin'), async (req, res) => {
   }
 });
 
+router.post('/recalc-points', protect, restrictTo('admin'), async (req, res) => {
+  try {
+    const users = await User.find().select('_id');
+    let updated = 0;
+    for (const user of users) {
+      const predictions = await Prediction.find({ user: user._id, isCalculated: true });
+      const total = predictions.reduce((s, p) => s + (p.points || 0), 0);
+      await User.findByIdAndUpdate(user._id, { points: total });
+      updated++;
+    }
+    res.json({ message: `Puntos recalculados para ${updated} usuarios` });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 router.patch('/:id/role', protect, restrictTo('admin'), async (req, res) => {
   try {
     const { role } = req.body;
