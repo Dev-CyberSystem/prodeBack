@@ -176,13 +176,6 @@ async function seed() {
   await mongoose.connect(process.env.MONGODB_URI);
   console.log('MongoDB conectado');
 
-  await User.deleteMany({});
-  await Match.deleteMany({});
-
-  // Admin user
-  const hashedPass = await bcrypt.hash('admin123', 12);
-  await User.create({ name: 'Admin', email: 'admin@prode.com', password: hashedPass, role: 'admin' });
-
   // Insertar todos los partidos
   const allMatches = [
     ...groupMatches,
@@ -192,6 +185,29 @@ async function seed() {
     ...makeKnockout(sf),
     ...makeKnockout(finale),
   ];
+
+  if (process.argv.includes('--matches-only')) {
+    const result = await Match.bulkWrite(
+      allMatches.map((match) => ({
+        updateOne: {
+          filter: { bracketId: match.bracketId },
+          update: { $set: match },
+          upsert: true,
+        },
+      }))
+    );
+
+    console.log(`Partidos sincronizados: ${allMatches.length}`);
+    console.log(`Insertados: ${result.upsertedCount}, actualizados: ${result.modifiedCount}`);
+    process.exit(0);
+  }
+
+  await User.deleteMany({});
+  await Match.deleteMany({});
+
+  // Admin user
+  const hashedPass = await bcrypt.hash('admin123', 12);
+  await User.create({ name: 'Admin', email: 'admin@prode.com', password: hashedPass, role: 'admin' });
 
   await Match.insertMany(allMatches);
 

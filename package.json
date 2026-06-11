@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "seed": "node src/seed.js"
+    "seed": "node src/seed.js",
+    "seed:matches": "node src/seed.js --matches-only"
   },
   "dependencies": {
     "axios": "^1.17.0",
