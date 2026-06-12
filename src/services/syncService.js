@@ -18,6 +18,8 @@ const TEAM_NAME_MAP = {
   'Costa Rica': 'Costa Rica',
   'Panama': 'Panamá',
   'Jamaica': 'Jamaica',
+  'Haiti': 'Haití',
+  'Haïti': 'Haití',
   // América del Sur
   'Argentina': 'Argentina',
   'Brazil': 'Brasil',
@@ -60,6 +62,10 @@ const TEAM_NAME_MAP = {
   'Slovenia': 'Eslovenia',
   'Kosovo': 'Kosovo',
   'Georgia': 'Georgia',
+  'Bosnia and Herzegovina': 'Bosnia',
+  'Bosnia-Herzegovina': 'Bosnia',
+  'Bosnia & Herzegovina': 'Bosnia',
+  'Bosnia-Hercegovina': 'Bosnia',
   // Africa
   'Morocco': 'Marruecos',
   'Senegal': 'Senegal',
@@ -73,7 +79,9 @@ const TEAM_NAME_MAP = {
   'Ivory Coast': 'Costa de Marfil',
   "Côte d'Ivoire": 'Costa de Marfil',
   'South Africa': 'Sudáfrica',
-  'Congo DR': 'R.D. Congo',
+  'Congo DR': 'Rep. D. Congo',
+  'DR Congo': 'Rep. D. Congo',
+  'Democratic Republic of Congo': 'Rep. D. Congo',
   'Congo': 'Congo',
   'Zambia': 'Zambia',
   'Tanzania': 'Tanzania',
@@ -107,6 +115,8 @@ const TEAM_NAME_MAP = {
   'Vietnam': 'Vietnam',
   'Philippines': 'Filipinas',
   'New Zealand': 'Nueva Zelanda',
+  'Curaçao': 'Curazao',
+  'Curacao': 'Curazao',
 };
 
 function normalize(name) {
