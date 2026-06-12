@@ -46,8 +46,8 @@ const TEAM_NAME_MAP = {
   'Austria': 'Austria',
   'Sweden': 'Suecia',
   'Norway': 'Noruega',
-  'Czech Republic': 'República Checa',
-  'Czechia': 'República Checa',
+  'Czech Republic': 'Rep. Checa',
+  'Czechia': 'Rep. Checa',
   'Slovakia': 'Eslovaquia',
   'Hungary': 'Hungría',
   'Romania': 'Rumania',
@@ -157,7 +157,9 @@ async function syncResults() {
   );
 
   const apiMatches = data.matches || [];
-  const dbMatches = await Match.find({ isFinished: false, homeTeam: { $ne: 'TBD' } });
+  // Trae todos los partidos con equipos definidos, incluyendo ya finalizados
+  // (para poder re-aplicar si el score quedó incompleto)
+  const dbMatches = await Match.find({ homeTeam: { $ne: 'TBD' } });
 
   let updated = 0;
   let skipped = 0;
@@ -185,6 +187,12 @@ async function syncResults() {
       // Intenta buscar también con los nombres invertidos (por si el fixture tiene los equipos al revés)
       skipped++;
       errors.push(`Sin coincidencia: "${apiMatch.homeTeam?.name}" vs "${apiMatch.awayTeam?.name}"`);
+      continue;
+    }
+
+    // Saltar si ya tiene exactamente el mismo resultado cargado
+    if (dbMatch.isFinished && dbMatch.homeScore === homeScore && dbMatch.awayScore === awayScore) {
+      skipped++;
       continue;
     }
 
